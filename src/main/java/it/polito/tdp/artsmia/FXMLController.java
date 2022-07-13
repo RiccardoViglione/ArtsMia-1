@@ -7,6 +7,7 @@ package it.polito.tdp.artsmia;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.artsmia.model.ArtObject;
 import it.polito.tdp.artsmia.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,12 +48,44 @@ public class FXMLController {
     
     @FXML
     void doAnalizzaOggetti(ActionEvent event) {
-
+this.txtResult.clear();
+this.model.creaGrafo();
+txtResult.appendText("Grafo creato!\n");
+txtResult.appendText("# Vertici : " + this.model.nVertici() + "\n");
+txtResult.appendText("# Archi : " + this.model.nArchi() + "\n");
     }
 
     @FXML
     void doCalcolaComponenteConnessa(ActionEvent event) {
-
+if(!model.grafoCreato()) {
+	txtResult.appendText("creare prima il grafo ");
+	return;
+	
+}int ob;
+try {
+    	 ob=Integer.parseInt(txtObjectId.getText());
+}
+catch(NumberFormatException e) {
+	this.txtResult.appendText("Scrivere un id oggetto");
+	return;
+	
+}
+ArtObject obs=null;
+boolean flag=false;    	
+for(ArtObject o:model.getVertici()) {
+	if(o.getId()==ob) {
+		flag=true;
+		obs=o;
+		
+	}
+	
+	
+}
+if(flag==false) {
+		this.txtResult.appendText("Scrivere un codice oggetto corretto");
+		return;
+	}
+this.txtResult.appendText("numero connessioni "+this.model.getConnessi(obs));
     }
 
     @FXML
